@@ -1,0 +1,1000 @@
+{
+	"info": {
+		"_postman_id": "2d411bc0-2979-4f05-ab13-331dca830add",
+		"name": "Twins API v1.0 Production",
+		"description": "**Аутентификация запросов**\n\nПроисходит по средству отправления заголовка `Authorization` по схеме Bearer.\n\n_Пример запроса через axios:_\n\n``` javascript\nconst token = '1|M4IB01issqF5ubjD7KNcoKy9ZJcKFtlW3QxKfz5r';\naxios({\n    method: 'get',\n    url: 'https://api.twins.kz/v1/users/current',\n    headers: {\n        'Authorization': `Bearer ${token}`\n    }\n})\n    .then(function (response) {\n        // code...\n     });\\n\\r\n\n```\n\n---\n\n**Обработка ответов сервера**\n\n- Ответ приходит в формате JSON\n    \n\n- Каждый ответ содержит поле `success`, которое является `boolean` типа. То есть характеризут его успешность. Если `true` – запрос выполнен успешно, `false` – запрос завершен ошибкой.\n    \n\n- Любой успешный запрос будет возвращен со статусом 200\n    \n\n- Если ответ содержит какие-то данные, то они будет в поле `data`\n    \n\n- Любой запрос завершенный ошибкой содержит поле `message`, в котором будет сторока с сообщением об ошибке",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14047714"
+	},
+	"item": [
+		{
+			"name": "Пользователи",
+			"item": [
+				{
+					"name": "Регистрация",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Иван\",\n    \"last_name\": \"Иванов\",\n    \"phone\": \"76665554433\",\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\",\n    \"password_confirmation\": \"qwerty@123\",\n    \"type\": \"PHYSICAL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseHost}}/users/register",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						},
+						"description": "Регистрация нового пользователя.\n\n**Токен требуется:** Нет\n\n**Тело запроса:**\n\n| **Параметр** | **Описание** | **Обязательный** |\n| --- | --- | --- |\n| `first_name` _(string)_ | Имя | Да |\n| `last_name` _(string)_ | Фамилия | Да |\n| `phone` _(string)_ | Номер телефона | Да |\n| `email` _(string)_ | E-mail | Да |\n| `password` _(string)_ | Пароль | Да |\n| `password_confirmation` _(string)_ | Подтверждение пароля | Да |\n| `type` _(string)_ | Тип пользователя. Значения: `PHYSICAL` – для физ. лица, `LEGAL` – для юр. лица | Да |\n| `orginization_name` _(string)_ | Название организации | Да, если `type` = `LEGAL` |\n| `contact_person_name` _(string)_ | ФИО контактного лица | Да, если `type` = `LEGAL` |\n| `bin` _(string)_ | БИН организации | Да, если `type` = `LEGAL` |"
+					},
+					"response": [
+						{
+							"name": "Успех. Физ. лицо",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"Иван\",\n    \"last_name\": \"Иванов\",\n    \"phone\": \"76665554433\",\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\",\n    \"password_confirmation\": \"qwerty@123\",\n    \"type\": \"PHYSICAL\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/register",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true, // статус запроса (Успех или Ошибка)\n    \"data\": {\n        \"token\": \"1|M4IB01issqF5ubjD7KNcoKy9ZJcKFtlW3QxKfz5r\" // токен аутентификации\n    }\n}"
+						},
+						{
+							"name": "Успех. Юр. лицо",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"Иван\",\n    \"last_name\": \"Иванов\",\n    \"phone\": \"76665554433\",\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\",\n    \"password_confirmation\": \"qwerty@123\",\n    \"type\": \"LEGAL\",\n    \"orginization_name\": \"ИП «Иван Иванов\",\n    \"contact_person_name\": \"Шышко Дмитрий Сергеевич\",\n    \"bin\": \"123456789012\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/register",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true, // статус запроса (Успех или Ошибка)\n    \"data\": {\n        \"token\": \"1|M4IB01issqF5ubjD7KNcoKy9ZJcKFtlW3QxKfz5r\" // токен аутентификации\n    }\n}"
+						},
+						{
+							"name": "Ошибка. Валидация не прошла",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"Иван\",\n    \"phone\": \"76665554433\",\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\",\n    \"password_confirmation\": \"qwerty@123\",\n    \"type\": \"LEGAL\",\n    \"orginization_name\": \"ИП «Иван Иванов\",\n    \"contact_person_name\": \"Шышко Дмитрий Сергеевич\",\n    \"bin\": \"123456789012\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/register",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false, // статус запроса (Успех или Ошибка)\n    \"message\": \"Поле last_name обязательно для заполнения\" // Сообщение об ошибке\n}"
+						}
+					]
+				},
+				{
+					"name": "Вход в аккаунт",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseHost}}/users/login",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						},
+						"description": "Аутентификация.\n\n**Токен требуется:** Нет\n\n**Тело запроса:**\n\n| **Параметр** | **Описание** | **Обязательный** |\n| --- | --- | --- |\n| `email` _(string)_ | E-mail | Да |\n| `password` _(string)_ | Пароль | Да |"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"qwerty@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/login",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true, // статус запроса (Успех или Ошибка)\n    \"data\": {\n        \"token\": \"1|M4IB01issqF5ubjD7KNcoKy9ZJcKFtlW3QxKfz5r\", // токен аутентификации\n        \"user\": { // данные пользователя\n            \"first_name\": \"Иван\",\n            \"last_name\": \"Иванов\",\n            \"phone\": \"76665554433\",\n            \"email\": \"ivan@mail.ru\",\n            \"type\": \"LEGAL\", // значения: \"PHYSICAL\" или \"LEGAL\"\n            \"organization_name\": \"ИП «Иван Иванов\", // может быть null, если `type` – \"PHYSICAL\"\n            \"contact_person_name\": \"Шышко Дмитрий Сергеевич\", // может быть null, если `type` – \"PHYSICAL\"\n            \"bin\": \"123456789012\" // может быть null, если `type` – \"PHYSICAL\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Ошибка. Неверный пароль",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"ivan@mail.ru\",\n    \"password\": \"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/login",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false, // статус запроса (Успех или Ошибка)\n    \"message\": \"Неверный пароль\" // Сообщение об ошибке\n}"
+						}
+					]
+				},
+				{
+					"name": "Профиль пользователя",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/users/current",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current"
+							]
+						},
+						"description": "Получение профиля пользователя.\n\n**Токен требуется:** Да\n\n**Тело запроса: Отсутсвует**"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/users/current",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"first_name\": \"Иван\",\n        \"last_name\": \"Иванов\",\n        \"phone\": \"76665554433\",\n        \"email\": \"ivan@mail.ru\",\n        \"type\": \"LEGAL\", // значения: \"PHYSICAL\" или \"LEGAL\"\n        \"organization_name\": \"ИП «Иван Иванов\", // может быть null, если `type` – \"PHYSICAL\"\n        \"contact_person_name\": \"Шышко Дмитрий Сергеевич\", // может быть null, если `type` – \"PHYSICAL\"\n        \"bin\": \"123456789012\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Фронт. контент",
+			"item": [
+				{
+					"name": "Категории",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/front-content/categories",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"front-content",
+								"categories"
+							]
+						},
+						"description": "Получение списка категорий.\n\n**Токен требуется:** Нет\n\n**Тело запроса: Отсутсвует**"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/front-content/categories",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"front-content",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"0-3 месяца\",\n            \"categories\": [\n                {\n                    \"id\": 2,\n                    \"name\": \"Распашонки\"\n                },\n                {\n                    \"id\": 3,\n                    \"name\": \"Ползунки\"\n                }\n            ]\n        },\n        {\n            \"id\": 4,\n            \"name\": \"6-18 месяцев\",\n            \"categories\": [\n                {\n                    \"id\": 5,\n                    \"name\": \"Брюки\"\n                },\n                {\n                    \"id\": 6,\n                    \"name\": \"Шорты\"\n                }\n            ]\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Товары",
+			"item": [
+				{
+					"name": "Товар по Slug",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/products/zimniaia-kurtka-giorgio-di-mare-1",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"products",
+								"zimniaia-kurtka-giorgio-di-mare-1"
+							]
+						},
+						"description": "Получение товара по ID.\n\n**Токен требуется:** Нет\n\n**Тело запроса:** Отсутсвует\n\n**Параметры запроса:**\n\n`id` – в адресе запроса"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/products/zimniaia-kurtka-giorgio-di-mare-1",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"products",
+										"zimniaia-kurtka-giorgio-di-mare-1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Giorgio Di Mare\",\n        \"description\": \"Утепленная куртка выполнена из стеганого текстиля с искусственным наполнителем. Модель прямого силуэта. Детали: воротник-стойка, застежка на молнии, боковые карманы...\",\n        \"category\": {\n            \"id\": 1,\n            \"name\": \"Куртка утепленная\",\n            \"tree\": [ // категории на уровень выше. В порядке убывания иерархии\n                {\n                    \"id\": 2,\n                    \"name\": \"6-18 месяцев\"\n                }\n            ]\n        },\n        \"images\": [\n            {\n                \"link\": \"https://api.twins.kz/storage/products/001.jpg\",\n                \"is_primary\": true // основное ли изображение\n            },\n            {\n                \"link\": \"https://api.twins.kz/storage/products/002.jpg\",\n                \"is_primary\": false // основное ли изображение\n            },\n            {\n                \"link\": \"https://api.twins.kz/storage/products/003.jpg\",\n                \"is_primary\": false // основное ли изображение\n            }\n        ],\n        \"price\": {\n            \"current\": 225000,\n            \"old\": 250000\n        },\n        \"attributes\": [ // доступные атрибуты товары (размер, цвет, материал и т.п.)\n            {\n                \"name\": \"Размер\", // название атрибута \n                \"code\": \"SIZE\", // код атрибута (константа)\n                \"options\": [ // варианты атрибута\n                    {\n                        \"id\": 1,\n                        \"name\": \"33\",\n                        \"in_stock\": 200 // кол-во товаров на складе\n                    },\n                    {\n                        \"id\": 1,\n                        \"name\": \"34\",\n                        \"in_stock\": 0 // кол-во товаров на складе\n                    }\n                ]\n            }\n        ],\n        \"extra_information\": [\n            {\n                \"name\": \"Материал\",\n                \"value\": \"Синтетика\"\n            },\n            {\n                \"name\": \"Параметры модели\",\n                \"value\": \"92 - 72 - 90\"\n            },\n            {\n                \"name\": \"Утеплитель\",\n                \"value\": \"Полиэстр 100%\"\n            },\n            {\n                \"name\": \"Длина\",\n                \"value\": \"74 см\"\n            }\n        ],\n        \"is_new\": false, // относится ли товар к коллекции Новых товарво\n        \"is_favorite\": false, // добавилен ли товар в избранное пользователя\n        \"similar_products\": [ // похожие товары\n            {\n                \"id\": 2,\n                \"name\": \"Tommy Hilfiger\",\n                \"category\": {\n                    \"id\": 1,\n                    \"name\": \"Куртка утепленная\"\n                },\n                \"price\": {\n                    \"current\": 225000,\n                    \"old\": 250000\n                },\n                \"preview\": \"https://api.twins.kz/storage/products/004.jpg\", // ссылка на превью товара\n                \"is_favorite\": false,\n                \"is_new\": true // является ли товар новым\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Фильтрация",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/products?search_query=Куртка&category_id=1&sort_mode=PRICE_ASC&step=1&per_step=9",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "search_query",
+									"value": "Куртка",
+									"description": "Поисковой запрос"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"description": "ID категории"
+								},
+								{
+									"key": "sort_mode",
+									"value": "PRICE_ASC",
+									"description": "Тип сортировки. (PRICE_ASC, PRICE_DESC, POPULARITY_ASC, POPULARITY_DESC)"
+								},
+								{
+									"key": "step",
+									"value": "1",
+									"description": "Номер страницы для пагинации (по умолч. – 1)"
+								},
+								{
+									"key": "per_step",
+									"value": "9",
+									"description": "Кол-во товаров на страницы (по умолч. – 9)"
+								}
+							]
+						},
+						"description": "Получение товара по ID.\n\n**Токен требуется:** Нет\n\n**Тело запроса:** Отсутсвует\n\n**Параметры запроса:**\n\n| **Название** | **Описание** | **Обязательный** |\n| --- | --- | --- |\n| `search_query` | Поисковой запрос | Нет |\n| `category_id` | ID категории | Нет |\n| `sort_mode` | Режим сортировки. Значения: `PRICE_ASC` – по увеличению цены, `PRICE_DESC` – по уменьшению цены,  <br>`POPULARITY_ASC` – по увеличению популярности, `POPULARITY_DESC` – по уменьшению популярности | Нет. По умолчанию – `POPULARITY_DESC` |\n| `step` | Шаг пагинации | Нет. По умолч. – 1 |\n| `per_step` | Кол-во товаров за шаг | Нет. По умолч. – 9 |"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/products?search_query=Куртка&category_id=1&sort_mode=PRICE_ASC&page=1&per_page=9",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "search_query",
+											"value": "Куртка",
+											"description": "Поисковой запрос"
+										},
+										{
+											"key": "category_id",
+											"value": "1",
+											"description": "ID категории"
+										},
+										{
+											"key": "sort_mode",
+											"value": "PRICE_ASC",
+											"description": "Тип сортировки. (PRICE_ASC, PRICE_DESC, POPULARITY_ASC, POPULARITY_DESC)"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Номер страницы для пагинации (по умолч. – 1)"
+										},
+										{
+											"key": "per_page",
+											"value": "9",
+											"description": "Кол-во товаров на страницы (по умолч. – 9)"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"total\": 150, // всего товаров\n    \"per_page\": 15, // кол-во товаров отображаемые одним шагом\n    \"current_page\": 1, // текущий шаг\n    \"last_page\": 10, // последний шаг\n    \"first_page_url\": \"https://api.twins.kz/v1/products?category_id=1&step=1\", // ссылка на первый шаг\n    \"last_page_url\": \"https://api.twins.kz/v1/products?category_id=1&step=10\", // ссылка на последний шаг\n    \"next_page_url\": \"https://api.twins.kz/v1/products?category_id=1&step=2\", // ссылка на следующий шаг\n    \"prev_page_url\": null, // ссылка на предыдущий шаг\n    \"path\": \"https://api.twins.kz/v1/products?category_id=1&step=1\", // ссылка на текущий шаг\n    \"from\": 1, // номер первого товара\n    \"to\": 15, // номер последнего товара в рамках текущего шага\n    \"data\":[\n        {\n            \"id\": 2,\n            \"name\": \"Tommy Hilfiger\",\n            \"category\": {\n                \"id\": 1,\n                \"name\": \"Куртка утепленная\"\n            },\n            \"price\": {\n                \"current\": 225000,\n                \"old\": 250000\n            },\n            \"preview\": \"https://api.twins.kz/storage/products/004.jpg\", // ссылка на превью товара\n            \"is_favorite\": false,\n            \"is_new\": true // является ли товар новым\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Получение избранного",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/users/current/favorite-list",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current",
+								"favorite-list"
+							]
+						},
+						"description": "Получение товара по ID.\n\n**Токен требуется:** Да\n\n**Тело запроса:** Отсутсвует"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/users/current/favorite-list",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"favorite-list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Tommy Hilfiger\",\n            \"category\": {\n                \"id\": 1,\n                \"name\": \"Куртка утепленная\"\n            },\n            \"price\": {\n                \"current\": 225000,\n                \"old\": 250000\n            },\n            \"preview\": \"https://api.twins.kz/storage/products/004.jpg\", // ссылка на превью товара\n            \"is_favorite\": true,\n            \"is_new\": true // является ли товар новым\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Формирование избранного",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_ids\": [1,2,3,4]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseHost}}/users/current/favorite-list",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current",
+								"favorite-list"
+							]
+						},
+						"description": "Получение товара по ID.\n\n**Токен требуется:** Да\n\n**Тело запроса:**\n\n| **Название** | **Описание** | **Обязательный** |\n| --- | --- | --- |\n| `product_ids[]` | Массив с ID товаров | Да |"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/users/current/favorite-list",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"favorite-list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Tommy Hilfiger\",\n            \"category\": {\n                \"id\": 1,\n                \"name\": \"Куртка утепленная\"\n            },\n            \"price\": {\n                \"current\": 225000,\n                \"old\": 250000\n            },\n            \"preview\": \"https://api.twins.kz/storage/products/004.jpg\", // ссылка на превью товара\n            \"is_favorite\": true,\n            \"is_new\": true // является ли товар новым\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Корзина",
+			"item": [
+				{
+					"name": "Получение корзины",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseHost}}/users/current/cart",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current",
+								"cart"
+							]
+						},
+						"description": "Получение корзины пользователя.\n\n**Токен требуется:** Да\n\n**Тело запроса: Нет**"
+					},
+					"response": [
+						{
+							"name": "Успех",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseHost}}/users/current/cart",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"cart"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 1,\n                \"name\": \"Giorgio Di Mare\",\n                \"price\": {\n                    \"current\": 225000, // текущая цена\n                    \"old\": 250000 // старая цена\n                },\n                \"amount\": 1, // кол-во товара\n                \"attributes\": [ // атрибуты товара\n                    {\n                        \"id\": 1, // ID опции атрибута\n                        \"name\": \"Размер\", // Название группы атрибута\n                        \"code\": \"SIZE\", // Код группы атрибута (константа)\n                        \"value\": \"34\" // Значение атрибута\n                    },\n                    {\n                        \"id\": 14,\n                        \"name\": \"Цвет\",\n                        \"code\": \"COLOR\",\n                        \"value\": \"Оранжевый\"\n                    }\n                ]\n            }\n        ],\n        \"price\": {\n            \"total\": 450000, // итоговая стоимость\n            \"clear_price\": 450000 // стоимость без промо-кодов\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Формирование корзины",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"products\": [\n        {\n            \"id\": 1,\n            \"amount\": 2,\n            \"attributes\": [\n                {\n                    \"id\": 1\n                },\n                {\n                    \"id\": 2\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"amount\": 1,\n            \"attributes\": []\n        }\n    ],\n    \"promo_code\": \"ABC_SALE_435\",\n    \"use_bonuses\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseHost}}/users/current/cart",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current",
+								"cart"
+							]
+						},
+						"description": "Формирование корзины пользователя.\n\n**Токен требуется:** Да\n\n**Тело запроса:**\n\n| **Название** | **Описание** | **Обязательно** |\n| --- | --- | --- |\n| `products` | Массив товаров | Да |\n| `products[]->id` | ID товара | Да |\n| `products[]->amount` | Кол-во | Да |\n| `products[]->attributes` | Атрибуты товара | Нет. Если нет – можно не отправлять параметр, можно указать `null`, можно отправить пустой массив |\n| `products[]->attributes[]->id` | ID атрибута | Да |\n| `promo_code` | Промо код | Нет. Нельзя указать, если указано `promo_code` = true |\n| `use_bonuses` | Использовать бонусы | Нет. Нельзя указать, если указано `use_bonuses` |"
+					},
+					"response": [
+						{
+							"name": "Успех. С промо-кодом",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"products\": [\n        {\n            \"id\": 1,\n            \"amount\": 2,\n            \"attributes\": [\n                {\n                    \"id\": 1\n                },\n                {\n                    \"id\": 2\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"amount\": 1,\n            \"attributes\": []\n        }\n    ],\n    \"promo_code\": \"ABC_SALE_435\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/current/cart",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"cart"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 1,\n                \"name\": \"Giorgio Di Mare\",\n                \"price\": {\n                    \"current\": 225000, // текущая цена\n                    \"old\": 250000 // старая цена\n                },\n                \"amount\": 1, // кол-во товара\n                \"attributes\": [ // атрибуты товара\n                    {\n                        \"id\": 1, // ID опции атрибута\n                        \"name\": \"Размер\", // Название группы атрибута\n                        \"code\": \"SIZE\", // Код группы атрибута (константа)\n                        \"value\": \"34\" // Значение атрибута\n                    },\n                    {\n                        \"id\": 14,\n                        \"name\": \"Цвет\",\n                        \"code\": \"COLOR\",\n                        \"value\": \"Оранжевый\"\n                    }\n                ]\n            }\n        ],\n        \"price\": {\n            \"total\": 450000, // итоговая стоимость\n            \"clear_price\": 450000 // стоимость без промо-кодов и бонусов\n        },\n        \"promo_code\": { // может быть null, если промо-код не указан\n            \"value\": \"ABC_SALE_435\", // промо-код\n            \"sale_percent\": 15 // скидка по промо-коду (в процентах)\n        },\n        \"bonuses\": null // // может быть null, если бонусы не применены\n    }\n}"
+						},
+						{
+							"name": "Успех. С бонусами",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"products\": [\n        {\n            \"id\": 1,\n            \"amount\": 2,\n            \"attributes\": [\n                {\n                    \"id\": 1\n                },\n                {\n                    \"id\": 2\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"amount\": 1,\n            \"attributes\": []\n        }\n    ],\n    \"promo_code\": \"ABC_SALE_435\",\n    \"use_bonuses\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/current/cart",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"cart"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 1,\n                \"name\": \"Giorgio Di Mare\",\n                \"price\": {\n                    \"current\": 225000, // текущая цена\n                    \"old\": 250000 // старая цена\n                },\n                \"amount\": 1, // кол-во товара\n                \"attributes\": [ // атрибуты товара\n                    {\n                        \"id\": 1, // ID опции атрибута\n                        \"name\": \"Размер\", // Название группы атрибута\n                        \"code\": \"SIZE\", // Код группы атрибута (константа)\n                        \"value\": \"34\" // Значение атрибута\n                    },\n                    {\n                        \"id\": 14,\n                        \"name\": \"Цвет\",\n                        \"code\": \"COLOR\",\n                        \"value\": \"Оранжевый\"\n                    }\n                ]\n            }\n        ],\n        \"price\": {\n            \"total\": 450000, // итоговая стоимость\n            \"clear_price\": 450000 // стоимость без промо-кодов и бонусов\n        },\n        \"promo_code\": null, // может быть null, если промо-код не указан\n        \"bonuses\": { // может быть null, если бонусы не применены\n            \"sale\": 20000\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Оформление заказа",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Иванов Иван Иванович\",\n    \"email\": \"ivan@mail.ru\",\n    \"phone\": \"76665554422\",\n    \"city\": \"Алматы\",\n    \"payment_type\": \"MANUALLY\",\n    \"delivery_type\": \"DELIVERY\",\n    \"street\": \"Абая\",\n    \"house\": 123,\n    \"flat\": 12,\n    \"entrance\": 2,\n    \"comment\": \"Позвоните, как курьер приедет\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseHost}}/users/current/card/order",
+							"host": [
+								"{{baseHost}}"
+							],
+							"path": [
+								"users",
+								"current",
+								"card",
+								"order"
+							]
+						},
+						"description": "Оформление заказа.\n\n**Токен требуется:** Да\n\n**Тело запроса:**\n\n| **Поле** | **Описание** | **Обязательно** |\n| --- | --- | --- |\n| `full_name` | ФИО клиента | Да |\n| `email` | E-mail | Да |\n| `phone` | Номер телефона | Да |\n| `city` | Город | Да |\n| `payment_type` | Способ оплаты. Значения: `MANUALLY` – по согласнование, `KASPI_QR` – через QR, `VIA_INVOICE` – через счет |  |\n| `delivery_type` | Тип доставки. Значения: `DELIVERY` – доставка курьера, `PICKUP` – самовывоз | Да |\n| `street` | Улица | Да, если `delivery_type` = `DELIVERY` |\n| `house` | Номер дома | Да, если `delivery_type` = `DELIVERY` |\n| `flat` | Номер квартиры / офиса | Да, если `delivery_type` = `DELIVERY` |\n| `entrance` | Подъезд / Блок | Да, если `delivery_type` = `DELIVERY` |\n| `comment` | Комментарий доставке | Нет. Не указывать, если `delivery_type` = `PICKUP` |"
+					},
+					"response": [
+						{
+							"name": "Успех. Доставка",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"full_name\": \"Иванов Иван Иванович\",\n    \"email\": \"ivan@mail.ru\",\n    \"phone\": \"76665554422\",\n    \"city\": \"Алматы\",\n    \"delivery_type\": \"DELIVERY\",\n    \"payment_type\": \"KASPI_QR\",\n    \"street\": \"Абая\",\n    \"house\": 123,\n    \"flat\": 12,\n    \"entrance\": 2,\n    \"comment\": \"Позвоните, как курьер приедет\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/current/card/order",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"card",
+										"order"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true\n}"
+						},
+						{
+							"name": "Успех. Самовывоз",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"full_name\": \"Иванов Иван Иванович\",\n    \"email\": \"ivan@mail.ru\",\n    \"phone\": \"76665554422\",\n    \"city\": \"Алматы\",\n    \"payment_type\": \"VIA_INVOICE\",\n    \"delivery_type\": \"PICKUP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseHost}}/users/current/card/order",
+									"host": [
+										"{{baseHost}}"
+									],
+									"path": [
+										"users",
+										"current",
+										"card",
+										"order"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseHost",
+			"value": "https://api.twinstextile-optom.kz/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
